@@ -31,7 +31,7 @@ const styles = theme => (
 );
 
 // Firebase의 데이터베이스 URL (JSON형식)
-const databaseRUL = "https://wordcloud-73426.firebaseio.com";
+const databaseURL = "https://wordcloud-73426.firebaseio.com";
 
 class Words extends React.Component{
     constructor(){
@@ -45,7 +45,7 @@ class Words extends React.Component{
         };
     }
     _post(word){
-        return fetch(`${databaseRUL}/words.json`,{
+        return fetch(`${databaseURL}/words.json`,{
             method: 'POST',
             body: JSON.stringify(word)
         }).then(res => {
@@ -60,7 +60,7 @@ class Words extends React.Component{
         });
     }
     _delete(id){
-        return fetch(`${databaseRUL}/words/${id}.json`,{
+        return fetch(`${databaseURL}/words/${id}.json`,{
             method:'DELETE'
         }).then(res => {
             if(res.status != 200){
@@ -75,7 +75,7 @@ class Words extends React.Component{
     }
     _get(){
         // Firebase데이터베이스에서 words.json에서 받아옴
-        fetch(`${databaseRUL}/words.json`).then(res => {
+        fetch(`${databaseURL}/words.json`).then(res => {
             // status가 200이 아닌경우 에러 페이지로 이동
             if(res.status != 200){
                 throw new Error(res.statusText);
@@ -105,6 +105,11 @@ class Words extends React.Component{
         nextState[e.target.name] = e.target.value;
         // 후 State에 보여주는 방식
         this.setState(nextState);
+        if(e.target.value < 1){
+            this.setState({weight:1});
+        }else if(e.target.value > 9){
+            this.setState({weight:9});
+        }
     }
     handleSubmit = () => {
         const word = {
@@ -162,7 +167,7 @@ class Words extends React.Component{
                     <DialogTitle>단어 추가</DialogTitle>
                     <DialogContent>
                         <TextField label = "단어" type = "text" name = "word" value = {this.state.word} onChange={this.handleValueChange}/><br />
-                        <TextField label = "가중치" type = "text" name = "weight" value = {this.state.weight} onChange={this.handleValueChange}/><br />
+                        <TextField label = "가중치(1부터 9까지)" type = "number" name = "weight" value = {this.state.weight} onChange={this.handleValueChange}/><br />
                     </DialogContent>
                     <DialogActions>
                         <Button variant="contained" color="primary" onClick={this.handleSubmit}>추가</Button>

@@ -36,7 +36,7 @@ const styles = theme => ({
 })
 
 // Firebase의 데이터베이스 URL (JSON형식)
-const databaseRUL = "https://wordcloud-73426.firebaseio.com";
+const databaseURL = "https://wordcloud-73426.firebaseio.com";
 
 class Texts extends React.Component{
 
@@ -58,7 +58,7 @@ class Texts extends React.Component{
         }
     }
     _delete(id){
-        return fetch(`${databaseRUL}/texts/${id}.json`,{
+        return fetch(`${databaseURL}/texts/${id}.json`,{
             method:'DELETE'
         }).then(res => {
             if(res.status != 200){
@@ -72,7 +72,7 @@ class Texts extends React.Component{
         })
     }
     _post(text){
-        return fetch(`${databaseRUL}/texts.json`,{
+        return fetch(`${databaseURL}/texts.json`,{
             method: 'POST',
             body: JSON.stringify(text)
         }).then(res => {
@@ -89,7 +89,7 @@ class Texts extends React.Component{
 
     _get(){
         // Firebase데이터베이스에서 words.json에서 받아옴
-        fetch(`${databaseRUL}/texts.json`).then(res => {
+        fetch(`${databaseURL}/texts.json`).then(res => {
             // status가 200이 아닌경우 에러 페이지로 이동
             if(res.status != 200){
                 throw new Error(res.statusText);
